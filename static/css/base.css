@@ -1,0 +1,21 @@
+/*初始化样式*/
+*{
+    margin: 0px;
+    padding: 0px;
+}
+/*html5*/
+article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}
+body{
+    font-size: 14px;
+    font-family: "Microsoft YaHei", "微软雅黑", "Lantinghei SC", "Open Sans", Arial, "Hiragino Sans GB",
+                "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;
+    min-width: 1200px;
+    /*background-position:center;*/
+    background-repeat:no-repeat;
+    background-size: cover;
+
+}
+ul li{;list-style: none}
+a{text-decoration: none}
+header{min-width: 1200px}
+

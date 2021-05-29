@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"><!--默认内核-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><!--IE=edge告诉IE使用最新的引擎渲染网页，chrome=1则可以激活Chrome Frame -->
+    <meta name="author" content="Tony,田槐旺"><!--作者-->
+    <meta name="keywords" content="PHP,前端,全栈开发,个人博客"><!--关键词-->
+    <meta name="description" content="Tony的个人博客,全栈开发,PHP开发"><!--描述-->
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">&lt;!&ndash;将http的不安全请求升级为https&ndash;&gt;-->
+    <link rel="shortcut icon" href="../static/imgs/author.jpg" />
+    <title>文章详情</title>
+    <!--[if lt ie 9]>
+    <script type="text/javascript">
+        var i = 0, html5tags = ["header", "footer", "nav", "aside", "article", "section"];
+        for (i in html5tags) {
+            document.createElement(html5tags[i]);
+        }
+    </script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script>window.location.href = "./ie.html";</script>
+    <![endif]-->
+    <link rel="stylesheet" href="../static/css/base.css"><!--初始化-->
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+    <link rel="stylesheet" href="../static/lib/font-master/web-fonts-with-css/css/fontawesome-all.min.css">
+    <style type="text/css">
+        body{
+            background-image:url("../static/imgs/back3.jpeg");
+        }
+        #canvas{
+            position: absolute;
+            right: 120px;
+            top: 0px;
+        }
+    </style>
+</head>
+<body>
+<!--文档导航-->
+<header>
+    <div class="top-nav">
+        <span>小田博客-原创个人网站</span>
+        <canvas id="canvas"></canvas>
+    </div>
+    <nav>
+        <ul class="nav">
+            <li><a class="nav-class" href="./index.html">首页</a></li>
+            <li><a class="nav-class" href="arcitleList.html">前端</a></li>
+            <li><a class="nav-class" href="#">后端</a></li>
+            <li><a class="nav-class" href="#">其他</a></li>
+            <li><a class="nav-class" href="#">教学笔录</a></li>
+            <li><a class="nav-class" href="./item.html">项目展示</a></li>
+            <li><a class="nav-class" href="./message.html">留言板</a></li>
+            <li><a class="nav-class" href="./error.html">关于作者(404)</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!--返回顶部-->
+<div class="toolbar">
+    <a href="./message.html" class="toolbar-item toolbar-item-feedback"></a>
+    <a href="javascript:scroll(0,0)" id="top" class="toolbar-item toolbar-item-top"></a>
+</div>
+
+<!--文档主体-->
+<section>
+    <div class="ad-area">
+
+    </div>
+    <div class="arc-area">
+        <!--文章列表-->
+        <div class="blog-area">
+            <h4><i class="fas fa-indent"></i>博客详情<small>Blog Detail</small></h4>
+            <h3>配置只显示自己应用程序信息info的设置方法</h3>
+            <div class="blog-info-box">
+                第二步、将SDK主要目录上传到服务器合适的目录下，先说下SDK的主要的目录是API文件夹里面的class目录，当初为
+                了做配置设置项测试，我上传了install文件夹，然后再开发环境配置了APP ID、APP Key以及callback_url，配置好之
+                后会在API/comm文件夹中多处一个inc.php配置文件，最后再recorder类中会引用这个配置文件。可是在后面的 开发过程
+                中我发现会报这个错The state does not match. You may be a victim of CSRF。后面我把qqlogin方法里面的 state放
+                到session中，对官网的DEMO SDK已经完全失去信心了，不在用QQ互联全部的文件而是挑几个重要的类文件来做开发。后面
+                想想官方给的SDK只是普通的PHP代码格式，我应用到thinkphp那很多东西都已经变了，最后我选择上个类文件，QC.php、
+                URL.php、Oauth.php上传到extend/qqlogin目录下。在thinkphp5的项目中扩展类一般上传到extend文件夹下，如下图所示我
+                上次的目录位置。
+                <p>
+                    <img src="../static/imgs/img-2.jpg">
+                </p>
+                第三步、改造上述三个类文件，因为QC.php是继承了Oauth.php，我们从后者改起，去掉require_once，加上命名空间如namespace
+                qqlogin，首先看成员属性，类常量是腾讯平台的地址，不用管，原来有三个属性，recorder、error不需要，注释掉或直接删掉。
+                下文同样，因为5个类文件我们只用到3个类文件，一个是报错类一个读取配置相关类。下面看Oauth.php成员属性、qqlogin跳转
+                方法、qqcallback回调方法的，其他两个类文件没有太大的改大，按照上述规则改即可
+            </div>
+            <!--文章分页-->
+            <div class="con-pages-btn">
+                <span><i class="far fa-arrow-alt-circle-up"></i>上一篇：<a class="blue-text" href="" title="">eclipse快捷键 包括查找类</a></span>
+                <span><i class="far fa-arrow-alt-circle-down"></i>下一篇：<a class="blue-text" href="" title="">个类文件没有太大的改大，按照上述规则改即可</a></span>
+            </div>
+        </div>
+        <!--侧栏-->
+        <div class="side-list">
+            <!--分类列表-->
+            <div class="fa-list-area">
+                <h4><i class="far fa-list-alt"></i>分类列表<small>Classify List</small></h4>
+                <div class="classify-area wow bounceInRight animated animated">
+                    <ul class="plinks">
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">句子内容<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">列表<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">内容<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">分类内容<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">内容<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">列表<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">内容<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">PHP<span class="badge">（65）</span></a></li>
+                        <li><a href="" title="" draggable="false">列表<span class="badge">（65）</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--推荐文章-->
+            <div class="groom-list">
+                <h4><i class="fab fa-free-code-camp"></i>推荐-生活与文章<small>Groom List</small></h4>
+                <ul>
+                    <li id="groom-top"><span>缩略图</span><span>描述</span></li>
+                    <li class="wow bounceInRight animated">
+                        <div class="port-2 effect-1">
+                            <div class="image-box">
+                                <img src="../static/imgs/img-2.jpg" alt="Image-1">
+                            </div>
+                            <div class="text-desc">
+                                <h3>文章标题那你你看看飒飒</h3>
+                                <a href="#" class="click-btn">点击阅读</a>
+                            </div>
+                        </div>
+                        <div class="port-right">
+                            <h3>文章标题那你你看看飒飒</h3>
+                            <p>我从第一次开始申请百度联盟到申请通过，我也不知道花了多长时间，
+                                但我可以肯定的是应该有一年了，当然因为一直申请通过不了，
+                            </p>
+                        </div>
+                    </li>
+                    <li class="wow bounceInRight animated">
+                        <div class="port-2 effect-1">
+                            <div class="image-box">
+                                <img src="../static/imgs/img-2.jpg" alt="Image-1">
+                            </div>
+                            <div class="text-desc">
+                                <h3>文章标题卡了还撒飒飒啊啊</h3>
+                                <a href="#" class="click-btn">点击阅读</a>
+                            </div>
+                        </div>
+                        <div class="port-right">
+                            <h3>文章标题那你你看看飒飒</h3>
+                            <p>我从第一次开始申请百度联盟到申请通过，我也不知道花了多长时间，
+                                但我可以肯定的是应该有一年了，当然因为一直申请通过不了，
+                            </p>
+                        </div>
+                    </li>
+                    <li class="wow bounceInRight animated">
+                        <div class="port-2 effect-1">
+                            <div class="image-box">
+                                <img src="../static/imgs/img-2.jpg" alt="Image-1">
+                            </div>
+                            <div class="text-desc">
+                                <h3>文章标题</h3>
+                                <a href="#" class="click-btn">点击阅读</a>
+                            </div>
+                        </div>
+                        <div class="port-right">
+                            <h3>文章标题那你你看看飒飒</h3>
+                            <p>我从第一次开始申请百度联盟到申请通过，我也不知道花了多长时间，
+                                但我可以肯定的是应该有一年了，当然因为一直申请通过不了，
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--友情链接-->
+            <div class="friend-list-area wow bounceInRight animated">
+                <h4><i class="fas fa-anchor"></i>项目链接<small>Friendly Link</small></h4>
+                <ul>
+                    <li><a href="#">航科院北斗导航系统</a></li>
+                    <li><a href="#">石家庄恒大房地产</a></li>
+                    <li><a href="#">河北领航考研</a></li>
+                    <li><a href="#">奥星企业</a></li>
+                    <li><a href="#">原本官方同城微信平台</a></li>
+                </ul>
+            </div>
+            <!--网站概况-->
+            <div class="survey-list wow bounceInRight animated">
+                <h4><i class="fab fa-fort-awesome"></i>网站概况<small>Web site profile</small></h4>
+                <ul>
+                    <li><i class="far fa-file-alt" style="padding: 0 9px"></i>文章总数<span>638篇</span></li>
+                    <li><i class="fas fa-paste" style="padding: 0 9px"></i>分类目录<span>38个</span></li>
+                    <li><i class="fas fa-eye"></i>浏览总量<span>23565</span></li>
+                    <li><i class="fas fa-link"></i>友情链接<span>25个</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!--文档底部-->
+<footer>
+    <div class="foot-nav">
+        <div class="copy-right"><span>CopyRight © 2016-2018 小田全栈博客 &nbsp;Design by Tony（小田）</span></div>
+        <div class="bottom-nav">
+            <span><a href="" target="_blank">网站地图</a>-<a href=""> 粤ICP备16001325号-1</a></span>
+        </div>
+    </div>
+</footer>
+<script src="../static/js/digit.js"></script>
+<script src="../static/js/time.js"></script>
+<!--wow.js风格-->
+<script src="../static/lib/wow/wow.min.js"></script>
+<script type="text/javascript">
+    if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+        new WOW().init();
+    };
+</script>
+<!--end-->
+<script src="../static/js/jquery-1.8.3.min.js"></script>
+<script src="../static/js/public.js"></script>
+</body>
+</html>

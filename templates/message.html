@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"><!--默认内核-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><!--IE=edge告诉IE使用最新的引擎渲染网页，chrome=1则可以激活Chrome Frame -->
+    <meta name="author" content="Tony,田槐旺"><!--作者-->
+    <meta name="keywords" content="PHP,前端,全栈开发,个人博客"><!--关键词-->
+    <meta name="description" content="Tony的个人博客,全栈开发,PHP开发"><!--描述-->
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">&lt;!&ndash;将http的不安全请求升级为https&ndash;&gt;-->
+    <link rel="shortcut icon" href="../static/imgs/author.jpg" />
+    <title>留言板</title>
+    <!--[if lt ie 9]>
+    <script type="text/javascript">
+        var i = 0, html5tags = ["header", "footer", "nav", "aside", "article", "section"];
+        for (i in html5tags) {
+            document.createElement(html5tags[i]);
+        }
+    </script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script>window.location.href = "./ie.html";</script>
+    <![endif]-->
+    <link rel="stylesheet" href="../static/css/base.css"><!--初始化-->
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+    <link rel="stylesheet" href="../static/lib/font-master/web-fonts-with-css/css/fontawesome-all.min.css">
+    <style type="text/css">
+        body {
+            /*background:url(../static/imgs/bg.jpg) no-repeat ; !*注意js里雪点的位置引用*!*/
+            background-image:url(../static/imgs/bg.jpg);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+        }
+        .message-box ul li a {
+            color: white;
+            background-color: #169fe6;
+            display: inline-block;
+            height: 36px;
+            width: 100px;
+            line-height: 36px;
+            border-radius: 9px;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+        }
+        .message-area{
+            margin: auto;
+            width: 1000px;height: 400px;
+            border:12px solid rgba(255,255,255,0.5);
+            box-sizing: border-box;
+            z-index: 9;
+        }
+        .message-box{
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 50px;
+            box-sizing: border-box;
+        }
+        .message-box ul{
+            float: right;
+            background-color: rgba(255,255,255,0.5);
+            overflow: hidden;
+            width: 60%;
+            height: 100%;
+        }
+        .message-box ul li{
+            padding: 0 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .message-box ul li:first-child{
+            line-height: 62px;
+        }
+        .message-box ul li span{
+            margin: 0 13px;
+            border-radius: 21px;
+            padding: 4px 17px 6px 19px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            background-color: #169fe6;
+        }
+        .message-box ul li input{
+            font-size: 14px;
+            border-radius: 11px;
+            padding: 0px 9px;
+            outline: none;
+            -webkit-appearance: none;
+            min-width: 360px;
+            padding-bottom: 3px;
+            padding-top: 8px;
+            line-height: 20px;
+        }
+        input[type="text"]:focus {
+
+        }
+        #txaArticle{
+            float: left;
+            min-height: 130px;
+            max-height: 250px;
+            border-radius: 13px;
+            width: 380px;
+            margin-left: 5px;
+            box-sizing: border-box;
+            padding: 10px 6px;
+            font-size: 14px;
+            outline: none;
+            -webkit-appearance: none;
+            resize:none;
+        }
+        /*图片*/
+        .message-img-area{
+            width: 30%;
+            float: left;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .message-img-area div{
+            width: 100%;
+            height: 50%;
+            text-align: center;
+            font-size: 50px;
+            color: white;
+            line-height: 130px;
+            font-weight: 600;
+        }
+        .mess-info span{
+            background-color: #169fe6;
+            padding: 10px 20px;
+            border-radius: 50%;
+        }
+        canvas{
+            position: fixed;
+            top:0;
+            left: 0;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+        }
+        section{
+            margin-top: 40px;
+            box-sizing: border-box;
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+        .leave-words-area{
+            width: 1000px;
+            height: auto;
+            margin: 50px auto 200px auto;
+            box-sizing: border-box;
+        }
+        .words-box-top{
+            width: 100%;
+            height: 60px;
+            background: rgba(255,255,255,0.5);
+            line-height: 60px;
+            box-sizing: border-box;
+            font-size: 25px;
+            overflow: hidden;
+            /*color: #169fe6;*/
+        }
+        .words-box-top i{
+            color: #f77825;
+            padding: 0 10px;
+        }
+        .words-box-top span{
+            padding-right:20px ;
+            float: right;
+        }
+        .leave-area{
+            overflow: hidden;
+            width: 100%;
+            margin: 6px 0;
+            padding: 26px 10px;
+            box-sizing: border-box;
+            position: relative;
+            background: rgba(255,255,255,0.7);
+
+        }
+        .cut-rule{
+            width: 100%;
+            border: 0.5px dashed white;
+        }
+        .comment-area{
+            width: 100%;
+            position: relative;
+            height: auto;
+        }
+        .comment-line ul {
+            text-align: left;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .comment-line ul li {
+            display: inline;
+            margin: 0 5px;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .comment-line ul li i,.re-info span i{
+            padding: 0 10px;
+            /*color: #f77825;*/
+        }
+        .comment-content {
+            font-size: 14px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .re-info{
+            line-height: 18px;
+            padding: 10px;
+        }
+        .re-comment{
+            border: 1px solid black;
+            width: 92%;
+            overflow: hidden;
+            margin: auto;
+        }
+        .re-content{
+            padding:6px 10px 0px 10px;
+        }
+
+    </style>
+
+</head>
+<body onLoad="init()">
+<!--文档导航-->
+<header>
+    <div class="top-nav">
+        <span>小田博客-原创个人网站</span>
+        <canvas id="canvas"></canvas>
+    </div>
+    <nav>
+        <ul class="nav">
+            <li><a class="nav-class" href="./index.html">首页</a></li>
+            <li><a class="nav-class" href="arcitleList.html">前端</a></li>
+            <li><a class="nav-class" href="#">后端</a></li>
+            <li><a class="nav-class" href="#">其他</a></li>
+            <li><a class="nav-class" href="#">教学笔录</a></li>
+            <li><a class="nav-class" href="./item.html">项目展示</a></li>
+            <li><a class="nav-class" href="./message.html">留言板</a></li>
+            <li><a class="nav-class" href="./error.html">关于作者(404)</a></li>
+        </ul>
+    </nav>
+</header>
+<!--返回顶部-->
+<div class="toolbar">
+    <a href="./message.html" class="toolbar-item toolbar-item-feedback"></a>
+    <a href="javascript:scroll(0,0)" id="top" class="toolbar-item toolbar-item-top"></a>
+</div>
+<section>
+    <div class="message-area">
+        <div class="message-box">
+            <ul class="wow bounceInRight animated">
+                <li>
+                    <span>姓名</span>
+                    <input type="text" autofocus="autofocus" placeholder="请输入姓名(最多10个字)">
+                </li>
+                <li>
+                    <span style="float: left">留言</span>
+                    <textarea name="u_content" id="txaArticle" placeholder="说点什么吧...（最多100字）"></textarea>
+                </li>
+                <li style="text-align: center;margin-top: 20px">
+                    <a href="javascript:;">提交留言</a>
+                </li>
+            </ul>
+            <div class="message-img-area">
+                <div class="mess-info wow rollIn animated" data-wow-delay="0.5s"><span>留</span></div>
+                <div class="mess-info wow rollIn animated" data-wow-delay="0.8s"><span>言</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="leave-words-area">
+        <div class="words-box-top">
+            <i class="fas fa-comment"></i>留言记录
+            <span><i class="fas fa-users"></i>目前已有56位小伙伴吐槽~</span>
+        </div>
+        <ul class="words-ul-area">
+            <li class="wow fadeInUp animated animated">
+                <div class="comment-area">
+                    <div class="comment-line ">
+                        <ul><li><i class="fas fa-user"></i>Joe</li><li><i class="fas fa-clock"></i>2018-03-16 11:33</li></ul>
+                    </div>
+                    <div class="comment-content">
+                        额因为不能多次回复，只好另外开贴了。
+                        我这里可以有工具类和游戏类的广告主希望投放广告，
+                        目前可以用js对接的方式把广告放在你的博客里，在你的博客中只要
+                        有展示就可以赚钱了，这个和百度联盟是一样的，你可以用第三方统计来
+                        统计广告展示量，我们按约定时间结算就可以了，不知道你有兴趣试试吗？
+                    </div>
+                    <!--回复-->
+                    <ul class="re-comment">
+                        <div class="re-info">
+                            <span><i class="fas fa-user-secret"></i>站长回复<i class="fas fa-clock"></i><time>2018-03-16 11:36</time></span>
+                            <div class=" re-content">
+                                这样的广告没兴趣，抱歉！这样的广告没兴趣，抱歉！
+                                这样的广告没兴趣，抱歉！这样的广告没兴趣，抱歉！
+                                这样的广告没兴趣，抱歉！这样的广告没兴趣，抱歉！
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </li>
+            <li></li>
+            <li class="wow fadeInUp animated animated">
+                <div class="comment-area">
+                    <div class="comment-line ">
+                        <ul><li><i class="fas fa-user"></i>Joe</li><li><i class="fas fa-clock"></i>2018-03-16 11:33</li></ul>
+                    </div>
+                    <div class="comment-content">
+                        额因为不能多次回复，只好另外开贴了。
+                        我这里可以有工具类和游戏类的广告主希望投放广告，
+                        目前可以用js对接的方式把广告放在你的博客里，在你的博客中只要
+                        有展示就可以赚钱了，这个和百度联盟是一样的，你可以用第三方统计来
+                        统计广告展示量，我们按约定时间结算就可以了，不知道你有兴趣试试吗？
+                    </div>
+                    <!--回复-->
+                    <ul class="re-comment">
+                        <div class="re-info">
+                            <span><i class="fas fa-user-secret"></i>站长回复<i class="fas fa-clock"></i><time>2018-03-16 11:36</time></span>
+                            <div class=" re-content">
+                                这样的广告没兴趣，抱歉！这样的广告没兴趣，抱歉！
+                                这样的广告没兴趣，抱歉！这样的广告没兴趣，抱歉！
+                                这样的广告没兴趣，抱歉！这样的广告没兴趣，抱歉！
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </li>
+            <li></li>
+        </ul>
+        <div class="pagination">
+            <ul>
+                <li class="prev-page"></li>
+                <li class="active"><span>1</span></li>
+                <li><a href="">2</a></li>
+                <li><a href="">3</a></li>
+                <li><a href="">4</a></li>
+                <li><a href="">5</a></li>
+                <li><a href="">6</a></li>
+                <li><a href="">7</a></li>
+                <li><a href="">8</a></li>
+                <li><a href="">9</a></li>
+                <li><a href="">10</a></li>
+                <li class="next-page"><a href="">下一页</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!--文档底部-->
+<footer>
+    <div class="foot-nav">
+        <div class="copy-right"><span>CopyRight © 2016-2018 小田全栈博客 &nbsp;Design by Tony（小田）</span></div>
+        <div class="bottom-nav">
+            <span><a href="" target="_blank">网站地图</a>-<a href=""> 粤ICP备16001325号-1</a></span>
+        </div>
+    </div>
+</footer>
+<!--wow.js风格-->
+<script src="../static/lib/wow/wow.min.js"></script>
+<script type="text/javascript">
+    if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+        new WOW().init();
+    };
+</script>
+<!--end-->
+<script src="../static/js/jquery-1.8.3.min.js"></script>
+<script src="../static/js/public.js"></script>
+<script type="text/javascript" src="../static/lib/snow/ThreeCanvas.js"></script>
+<script type="text/javascript" src="../static/lib/snow/Snow.js"></script>
+<script type="text/javascript">
+    var SCREEN_WIDTH = window.innerWidth;
+    var SCREEN_HEIGHT = window.innerHeight;
+    var container;
+    var particle;
+    var camera;
+    var scene;
+    var renderer;
+    var mouseX = 0;
+    var mouseY = 0;
+
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+
+    var particles = [];
+    var particleImage = new Image();//THREE.ImageUtils.loadTexture( "img/ParticleSmoke.png" );
+    particleImage.src = '../static/imgs/ParticleSmoke.png';
+
+
+
+    function init() {
+
+        container = document.createElement('div');
+        document.body.appendChild(container);
+
+        camera = new THREE.PerspectiveCamera( 75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000 );
+        camera.position.z = 1000;
+
+        scene = new THREE.Scene();
+        scene.add(camera);
+
+        renderer = new THREE.CanvasRenderer();
+        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        var material = new THREE.ParticleBasicMaterial( { map: new THREE.Texture(particleImage) } );
+
+        for (var i = 0; i < 500; i++) {
+
+            particle = new Particle3D( material);
+            particle.position.x = Math.random() * 2000 - 1000;
+            particle.position.y = Math.random() * 2000 - 1000;
+            particle.position.z = Math.random() * 2000 - 1000;
+            particle.scale.x = particle.scale.y =  1;
+            scene.add( particle );
+
+            particles.push(particle);
+        }
+
+        container.appendChild( renderer.domElement );
+
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+        document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+        setInterval( loop, 1000 / 60 );
+
+    }
+
+    function onDocumentMouseMove( event ) {
+
+        mouseX = event.clientX - windowHalfX;
+        mouseY = event.clientY - windowHalfY;
+    }
+
+    function onDocumentTouchStart( event ) {
+
+        if ( event.touches.length == 1 ) {
+
+            event.preventDefault();
+
+            mouseX = event.touches[ 0 ].pageX - windowHalfX;
+            mouseY = event.touches[ 0 ].pageY - windowHalfY;
+        }
+    }
+
+    function onDocumentTouchMove( event ) {
+
+        if ( event.touches.length == 1 ) {
+
+            event.preventDefault();
+
+            mouseX = event.touches[ 0 ].pageX - windowHalfX;
+            mouseY = event.touches[ 0 ].pageY - windowHalfY;
+        }
+    }
+
+    //
+
+    function loop() {
+
+        for(var i = 0; i<particles.length; i++)
+        {
+
+            var particle = particles[i];
+            particle.updatePhysics();
+
+            with(particle.position)
+            {
+                if(y<-1000) y+=2000;
+                if(x>1000) x-=2000;
+                else if(x<-1000) x+=2000;
+                if(z>1000) z-=2000;
+                else if(z<-1000) z+=2000;
+            }
+        }
+
+        camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+        camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+        camera.lookAt(scene.position);
+
+        renderer.render( scene, camera );
+
+
+    }
+</script>
+</body>
+</html>
